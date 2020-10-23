@@ -6,6 +6,11 @@
 ![ModeloRelacional](/../main/ModeloRelacional.png?raw=true "Modelo Relacional")
 
 ```sql
+CREATE TABLE tipo_cliente (
+  id int(11) PRIMARY KEY AUTO_INCREMENT,
+  descricao varchar(100) NOT NULL
+);
+
 CREATE TABLE clientes (
   id int(11) PRIMARY KEY AUTO_INCREMENT,
   nome varchar(250) NOT NULL,
@@ -22,18 +27,20 @@ CREATE TABLE clientes (
   KEY FK_clientes_tipo_cliente (id_tipo_cliente),
   CONSTRAINT FK_clientes_tipo_cliente FOREIGN KEY (id_tipo_cliente) REFERENCES tipo_cliente (id)
 );
-CREATE TABLE cliente_veiculos_servicos (
+
+CREATE TABLE veiculos (
   id int(11) PRIMARY KEY AUTO_INCREMENT,
-  id_cliente int(11) NOT NULL,
-  id_veiculo int(11) NOT NULL,
-  id_tipo_servico int(11) NOT NULL,
-  data_servico date NOT NULL,
-  KEY FK_cliente_veiculos_servicos_clientes (id_cliente),
-  KEY FK_cliente_veiculos_servicos_veiculos (id_veiculo),
-  KEY FK_cliente_veiculos_servicos_tipo_servicos (id_tipo_servico),
-  CONSTRAINT FK_cliente_veiculos_servicos_clientes FOREIGN KEY (id_cliente) REFERENCES clientes (id),
-  CONSTRAINT FK_cliente_veiculos_servicos_tipo_servicos FOREIGN KEY (id_tipo_servico) REFERENCES tipo_servicos (id),
-  CONSTRAINT FK_cliente_veiculos_servicos_veiculos FOREIGN KEY (id_veiculo) REFERENCES veiculos (id)
+  modelo varchar(250) NOT NULL,
+  placa varchar(150) NOT NULL,
+  marca varchar(150) NOT NULL,
+  ano smallint(4) NOT NULL,
+  cor_veiculo varchar(50) NOT NULL,
+  qtd_estoque int(11) NOT NULL DEFAULT '1'
+);
+
+CREATE TABLE tipo_servicos (
+  id int(11) PRIMARY KEY AUTO_INCREMENT,
+  descricao varchar(100) NOT NULL
 );
 
 CREATE TABLE precos (
@@ -47,24 +54,18 @@ CREATE TABLE precos (
   CONSTRAINT FK_precos_veiculos FOREIGN KEY (id_veiculo) REFERENCES veiculos (id)
 );
 
-CREATE TABLE tipo_cliente (
+CREATE TABLE cliente_veiculos_servicos (
   id int(11) PRIMARY KEY AUTO_INCREMENT,
-  descricao varchar(100) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS tipo_servicos (
-  id int(11) PRIMARY KEY AUTO_INCREMENT,
-  descricao varchar(100) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS veiculos (
-  id int(11) PRIMARY KEY AUTO_INCREMENT,
-  modelo varchar(250) NOT NULL,
-  placa varchar(150) NOT NULL,
-  marca varchar(150) NOT NULL,
-  ano smallint(4) NOT NULL,
-  cor_veiculo varchar(50) NOT NULL,
-  qtd_estoque int(11) NOT NULL DEFAULT '1'
+  id_cliente int(11) NOT NULL,
+  id_veiculo int(11) NOT NULL,
+  id_tipo_servico int(11) NOT NULL,
+  data_servico date NOT NULL,
+  KEY FK_cliente_veiculos_servicos_clientes (id_cliente),
+  KEY FK_cliente_veiculos_servicos_veiculos (id_veiculo),
+  KEY FK_cliente_veiculos_servicos_tipo_servicos (id_tipo_servico),
+  CONSTRAINT FK_cliente_veiculos_servicos_clientes FOREIGN KEY (id_cliente) REFERENCES clientes (id),
+  CONSTRAINT FK_cliente_veiculos_servicos_tipo_servicos FOREIGN KEY (id_tipo_servico) REFERENCES tipo_servicos (id),
+  CONSTRAINT FK_cliente_veiculos_servicos_veiculos FOREIGN KEY (id_veiculo) REFERENCES veiculos (id)
 );
 
 
